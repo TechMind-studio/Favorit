@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #D62027;
+  --primary-dark: #A8181E;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply text-gray-900 bg-white antialiased;
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-dark {
+    background: rgba(18, 18, 18, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #D62027 0%, #A8181E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white font-bold px-8 py-3 rounded-full
+           hover:bg-primary-dark transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
+           active:scale-95 tracking-widest uppercase text-xs;
+  }
+
+  .btn-outline {
+    @apply border border-gray-300 text-gray-800 font-bold px-8 py-3 rounded-full
+           hover:border-primary hover:text-primary transition-colors duration-200
+           focus:outline-none active:scale-95 tracking-widest uppercase text-xs;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-6xl font-extrabold font-headline tracking-tighter text-gray-900 text-center mb-3 leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-gray-500 text-center text-lg mb-16 font-light;
+  }
+
+  .image-stack-item {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .image-stack-item:hover {
+    transform: translateY(-6px) scale(1.02);
+    z-index: 20;
+  }
+
+  .hero-anim {
+    opacity: 0;
+    transform: translateY(28px);
+    animation: heroFadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+@keyframes heroFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes introCarDrive {
+  0%   { left: -260px; transform: scaleX(-1); }
+  100% { left: 110%; transform: scaleX(-1); }
+}
+
+@keyframes introMotoDrive {
+  0%   { left: 110%; transform: scaleX(-1); }
+  100% { left: -220px; transform: scaleX(-1); }
+}
