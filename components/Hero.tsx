@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { basePath } from '@/lib/basePath'
 
 export default function Hero() {
   return (
@@ -16,7 +17,7 @@ export default function Hero() {
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 'calc(-9.375vw + 17px)' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%' }}>
               <Image
-                src="/images/cars/cars-fleet.jpg"
+                src={`${basePath}/images/cars/cars-fleet.jpg`}
                 alt="Учебные автомобили"
                 fill
                 className="object-contain object-bottom"
@@ -31,7 +32,7 @@ export default function Hero() {
         <div className="w-1/2 h-full flex items-end overflow-hidden">
           <div className="relative w-full" style={{ height: 'min(27vw, 35vh)' }}>
             <Image
-              src="/images/cars/moto-fleet.jpg"
+              src={`${basePath}/images/cars/moto-fleet.jpg`}
               alt="Учебные мотоциклы"
               fill
               className="object-contain object-bottom"
@@ -42,7 +43,7 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex items-start justify-center pointer-events-none z-20" style={{ paddingTop: '8%' }}>
           <Image
-            src="/img-logo.svg"
+            src={`${basePath}/img-logo.svg`}
             alt="Автошкола Фаворит"
             width={260}
             height={260}

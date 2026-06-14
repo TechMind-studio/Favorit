@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { basePath } from '@/lib/basePath'
 
 
 const navLinks = [
@@ -18,7 +19,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-0">
       <div className="max-w-6xl mx-auto glass rounded-full px-10 py-3 flex justify-between items-center shadow-xl shadow-black/5 border border-white/50">
         <a href="#" className="flex items-center gap-4 flex-shrink-0">
-          <Image src="/logo.svg" alt="Автошкола Фаворит" width={495} height={387} className="h-[52px] w-auto" priority />
+          <Image src={`${basePath}/logo.svg`} alt="Автошкола Фаворит" width={495} height={387} className="h-[52px] w-auto" priority />
           <div className="block">
             <span className="block text-[11px] font-black uppercase tracking-[0.25em] leading-none text-gray-400">Автошкола</span>
             <span className="block text-lg font-black tracking-tight leading-none text-primary">ФАВОРИТ</span>

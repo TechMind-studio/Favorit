@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { basePath } from '@/lib/basePath'
 
 
 export default function Footer() {
@@ -66,7 +67,7 @@ export default function Footer() {
 
             <div className="flex items-center gap-4">
               <a href="#" className="opacity-90 hover:opacity-100 transition-opacity flex-shrink-0">
-                <Image src="/logo.svg" alt="Автошкола Фаворит" width={56} height={56} />
+                <Image src={`${basePath}/logo.svg`} alt="Автошкола Фаворит" width={56} height={56} />
               </a>
               <p className="text-gray-600 text-xs leading-5">
                 30 лет обучаем вождению<br />
@@ -99,7 +100,7 @@ export default function Footer() {
               <a href="https://tech-mind-info.ru/" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
                 <span className="text-gray-400 text-sm font-medium">Разработано:</span>
-                <Image src="/techmind-logo.png" alt="TechMind" width={24} height={24} className="rounded" />
+                <Image src={`${basePath}/techmind-logo.png`} alt="TechMind" width={24} height={24} className="rounded" />
                 <span className="text-gray-400 text-sm font-medium">TechMind</span>
               </a>
             </div>

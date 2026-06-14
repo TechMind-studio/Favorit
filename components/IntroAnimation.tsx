@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { basePath } from '@/lib/basePath'
 
 export default function IntroAnimation() {
   const [phase, setPhase] = useState<'running' | 'fading' | 'done'>('running')
@@ -46,7 +47,7 @@ export default function IntroAnimation() {
             animation: 'introCarDrive 2.3s cubic-bezier(0.4, 0, 0.3, 1) forwards',
           }}
         >
-          <Image src="/images/intro-car.png" alt="" fill className="object-contain" unoptimized priority />
+          <Image src={`${basePath}/images/intro-car.png`} alt="" fill className="object-contain" unoptimized priority />
         </div>
 
         <div
@@ -57,7 +58,7 @@ export default function IntroAnimation() {
             animation: 'introMotoDrive 2.3s cubic-bezier(0.4, 0, 0.3, 1) forwards',
           }}
         >
-          <Image src="/images/intro-moto.png" alt="" fill className="object-contain" unoptimized priority />
+          <Image src={`${basePath}/images/intro-moto.png`} alt="" fill className="object-contain" unoptimized priority />
         </div>
       </div>
 

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import AnimateIn from './AnimateIn'
+import { basePath } from '@/lib/basePath'
 
 interface Car {
   name: string
@@ -20,7 +21,7 @@ const cars: Car[] = [
     description: 'Современный седан с отличной обзорностью и просторным салоном.',
     color: 'from-blue-900 to-blue-700',
     imagePlaceholder: 'JAC J7',
-    image: '/images/cars/jac_j7.png',
+    image: `${basePath}/images/cars/jac_j7.png`,
   },
   {
     name: 'Hyundai Solaris',
@@ -42,7 +43,7 @@ const cars: Car[] = [
     description: 'Отечественный автомобиль с честной механикой. Отлично подходит для начинающих.',
     color: 'from-emerald-900 to-emerald-700',
     imagePlaceholder: 'LADA Vesta',
-    image: '/images/cars/vesta.jpg',
+    image: `${basePath}/images/cars/vesta.jpg`,
   },
   {
     name: 'Honda CB500F',
@@ -50,7 +51,7 @@ const cars: Car[] = [
     description: 'Лёгкий учебный мотоцикл. Интуитивное управление и надёжные тормоза.',
     color: 'from-orange-900 to-orange-700',
     imagePlaceholder: 'Honda CB500F',
-    image: '/images/cars/honda.png',
+    image: `${basePath}/images/cars/honda.png`,
   },
   {
     name: 'Yamaha MT-03',
