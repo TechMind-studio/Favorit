@@ -84,27 +84,33 @@ export default function Hero() {
   return (
     <section id="hero" className="relative overflow-hidden bg-[#F7F6F4]" style={{ marginTop: '112px' }}>
       <div className="max-w-6xl mx-auto px-4 pt-6 pb-12 md:pt-8 md:pb-16">
-        <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-start">
+        {/* На мобильном — одна колонка с явным порядком: заголовок → транспорт → текст и CTA,
+            чтобы на первом экране было видно то же, что и на десктопе (обещание + автопарк).
+            С lg — исходная сетка в две колонки, транспорт справа на всю высоту. */}
+        <div className="flex flex-col gap-y-7 lg:grid lg:grid-cols-[0.85fr_1.15fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-0 lg:items-start">
 
-          <div className="hero-anim">
-            <p className="text-primary text-xs font-bold uppercase tracking-[0.3em] mb-5">
+          <div className="hero-anim order-1 lg:col-start-1 lg:row-start-1">
+            <p className="text-primary text-xs font-bold uppercase tracking-[0.15em] sm:tracking-[0.3em] mb-5">
               Автошкола Фаворит · Новосибирск
             </p>
             <h1 className="font-headline text-5xl md:text-6xl lg:text-[4.5rem] font-black tracking-tight leading-[0.97] text-gray-900">
               Учим водить<br />
               <span className="text-primary">уверенно.</span>
             </h1>
-            <p className="text-gray-500 text-lg mt-6 max-w-md font-light leading-relaxed">
+          </div>
+
+          <div className="hero-anim order-3 lg:col-start-1 lg:row-start-2">
+            <p className="text-gray-500 text-lg lg:mt-6 max-w-md font-light leading-relaxed">
               30 лет обучаем вождению в Новосибирске. Категории A и B, собственный
               автодром в центре города, рассрочка 0%.
             </p>
 
-            <div className="flex flex-wrap gap-3 mt-9">
+            <div className="flex flex-wrap gap-3 mt-7 lg:mt-9">
               <a href="#prices" className="btn-primary">Записаться на обучение</a>
               <a href="tel:+73833832100" className="btn-outline">Позвонить</a>
             </div>
 
-            <div className="flex flex-wrap gap-8 mt-10 pt-8 border-t border-gray-200">
+            <div className="flex flex-wrap gap-8 mt-8 pt-7 lg:mt-10 lg:pt-8 border-t border-gray-200">
               {badges.map((b) => (
                 <div key={b.value}>
                   <div className="font-headline text-2xl font-extrabold text-gray-900 leading-none">{b.value}</div>
@@ -114,7 +120,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
             <div className="relative flex flex-col w-full">
               <div className="relative w-full aspect-[1195/671]">
                 <Image
@@ -135,7 +141,9 @@ export default function Hero() {
                   </span>
                 ))}
               </div>
-              <div className="relative w-[68%] aspect-[1135/750] -mt-24">
+              {/* Нахлёст в % от ширины колонки, а не в px: с фиксированным -mt-24 на узком
+                  экране мотоциклы наезжали на машины почти вдвое сильнее, чем на десктопе. */}
+              <div className="relative w-[78%] lg:w-[68%] aspect-[1135/750] -mt-[15%]">
                 <Image
                   src={`${basePath}/images/cars/moto-fleet-nobg.png`}
                   alt="Учебные мотоциклы"

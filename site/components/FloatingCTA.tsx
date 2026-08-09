@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const actions = [
   {
@@ -51,16 +51,49 @@ const actions = [
 export default function FloatingCTA() {
   const [open, setOpen] = useState(false)
   const [visible, setVisible] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
 
+  // Пока страницу листают вниз — кнопка уезжает: на телефоне она висит ровно под большим
+  // пальцем и закрывает текст. Возвращается при скролле вверх или когда листать перестали.
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.6)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    let lastY = window.scrollY
+    let idleTimer: ReturnType<typeof setTimeout>
+
+    const onScroll = () => {
+      const y = window.scrollY
+      const pastHero = y > window.innerHeight * 0.6
+      const scrollingDown = y > lastY
+      lastY = y
+
+      setVisible(pastHero && !scrollingDown)
+      setOpen(false)
+
+      clearTimeout(idleTimer)
+      idleTimer = setTimeout(() => setVisible(pastHero), 500)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      clearTimeout(idleTimer)
+    }
   }, [])
+
+  // Закрытие по тапу мимо — через слушатель на документе, а не полноэкранной подложкой:
+  // подложка (fixed inset-0) съедала жест протяжки, и страница переставала листаться.
+  useEffect(() => {
+    if (!open) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [open])
 
   return (
     <>
       <div
+        ref={wrapRef}
         className={`fixed bottom-6 right-4 md:bottom-24 md:right-24 z-40 flex flex-col items-center gap-3 transition-all duration-300 ${
           visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
@@ -100,13 +133,6 @@ export default function FloatingCTA() {
           </svg>
         </button>
       </div>
-
-      {open && (
-        <div
-          className="fixed inset-0 z-30"
-          onClick={() => setOpen(false)}
-        />
-      )}
 
     </>
   )

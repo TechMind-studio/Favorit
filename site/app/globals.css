@@ -14,6 +14,11 @@ html {
 
 body {
   @apply text-gray-900 bg-white antialiased;
+  /* Секции с AnimateIn direction="left/right" до появления сдвинуты по X на 36px и
+     растягивают область прокрутки — на телефоне страница ездила вбок на ~20px при
+     вертикальном свайпе. `clip` (в отличие от `hidden`) не создаёт контейнер прокрутки
+     и не ломает position: sticky. */
+  overflow-x: clip;
 }
 
 @layer components {
