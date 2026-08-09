@@ -6,6 +6,18 @@ const badges = [
   { value: 'Автодром', label: 'в центре города' },
 ]
 
+const carLights = [
+  { left: '24%', top: '52%', delay: '0.2s', angle: -10 },
+  { left: '50%', top: '55%', delay: '0.5s', angle: -8 },
+  { left: '79%', top: '52%', delay: '0.8s', angle: -12 },
+]
+
+const motoLights = [
+  { left: '17%', top: '39%', delay: '1.1s', shape: 'round' as const },
+  { left: '42%', top: '41%', delay: '1.4s', shape: 'round' as const },
+  { left: '74%', top: '48%', delay: '1.7s', shape: 'sport' as const, angle: 6 },
+]
+
 export default function Hero() {
   return (
     <section id="hero" className="relative overflow-hidden bg-[#F7F6F4]" style={{ marginTop: '112px' }}>
@@ -41,27 +53,47 @@ export default function Hero() {
           </div>
 
           <div className="relative">
-            <div className="relative rounded-3xl overflow-hidden bg-white shadow-xl shadow-black/5">
-              <div className="relative flex w-full" style={{ height: 'min(38vw, 380px)', minHeight: '220px' }}>
-                <div className="relative w-1/2 h-full overflow-hidden">
+            <div className="relative rounded-3xl overflow-hidden bg-[#EDEBE7] shadow-xl shadow-black/5">
+              <div className="relative flex w-full aspect-[1195/448]">
+                <div className="relative w-1/2 h-full border-r border-black/5">
                   <Image
                     src={`${basePath}/images/cars/cars-fleet.jpg`}
                     alt="Учебные автомобили"
                     fill
-                    className="object-contain object-bottom"
+                    className="object-contain object-center"
                     priority
                   />
+                  {carLights.map((l, i) => (
+                    <span
+                      key={i}
+                      className="headlight-wrap"
+                      style={{ left: l.left, top: l.top, transform: `translate(-50%, -50%) rotate(${l.angle}deg)` }}
+                    >
+                      <span className="headlight-glow headlight-glow--car" style={{ animationDelay: l.delay }} />
+                    </span>
+                  ))}
                 </div>
-                <div className="w-1/2 h-full flex items-end overflow-hidden">
-                  <div className="relative w-full" style={{ height: '78%' }}>
-                    <Image
-                      src={`${basePath}/images/cars/moto-fleet.jpg`}
-                      alt="Учебные мотоциклы"
-                      fill
-                      className="object-contain object-bottom"
-                      priority
-                    />
-                  </div>
+                <div className="relative w-1/2 h-full">
+                  <Image
+                    src={`${basePath}/images/cars/moto-fleet.jpg`}
+                    alt="Учебные мотоциклы"
+                    fill
+                    className="object-contain object-center"
+                    priority
+                  />
+                  {motoLights.map((l, i) => (
+                    <span
+                      key={i}
+                      className="headlight-wrap"
+                      style={{
+                        left: l.left,
+                        top: l.top,
+                        transform: `translate(-50%, -50%)${l.angle ? ` rotate(${l.angle}deg)` : ''}`,
+                      }}
+                    >
+                      <span className={`headlight-glow headlight-glow--${l.shape}`} style={{ animationDelay: l.delay }} />
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>

@@ -71,6 +71,37 @@ body {
     transform: translateY(28px);
     animation: heroFadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
+
+  .headlight-wrap {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .headlight-glow {
+    display: block;
+    background: radial-gradient(ellipse, rgba(255, 235, 180, 0.95) 0%, rgba(255, 200, 90, 0.55) 45%, rgba(255, 200, 90, 0) 75%);
+    filter: blur(1.5px);
+    opacity: 0;
+    animation: headlightPulse 4s ease-in-out infinite;
+  }
+
+  .headlight-glow--car {
+    width: 34px;
+    height: 13px;
+    border-radius: 50%;
+  }
+
+  .headlight-glow--round {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+  }
+
+  .headlight-glow--sport {
+    width: 24px;
+    height: 15px;
+    border-radius: 50%;
+  }
 }
 
 @keyframes heroFadeUp {
@@ -88,4 +119,20 @@ body {
 @keyframes introMotoDrive {
   0%   { left: 110%; transform: scaleX(-1); }
   100% { left: -220px; transform: scaleX(-1); }
+}
+
+@keyframes headlightPulse {
+  0%   { opacity: 0;   transform: scale(0.4); }
+  15%  { opacity: 1;   transform: scale(1.25); }
+  30%  { opacity: 0.7; transform: scale(1); }
+  70%  { opacity: 0.7; transform: scale(1); }
+  85%  { opacity: 1;   transform: scale(1.1); }
+  100% { opacity: 0.7; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .headlight-glow {
+    animation: none;
+    opacity: 0.75;
+  }
 }
