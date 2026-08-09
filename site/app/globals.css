@@ -77,30 +77,30 @@ body {
     pointer-events: none;
   }
 
-  .headlight-glow {
+  /* Ядро — маска по периметру фонаря (clip-path/border-radius задаются инлайн). Blur здесь
+     сглаживает грани полигона (обводка по клику не идеально гладкая), без scale — форма
+     не должна "дрожать" при пульсации, это отдаётся размытому bloom-слою снаружи. */
+  .headlight-core {
+    position: absolute;
+    inset: 0;
     display: block;
-    background: radial-gradient(ellipse, rgba(255, 235, 180, 0.95) 0%, rgba(255, 200, 90, 0.55) 45%, rgba(255, 200, 90, 0) 75%);
-    filter: blur(1.5px);
+    background: radial-gradient(ellipse, #fffbe8 0%, rgba(255, 225, 140, 0.95) 45%, rgba(255, 205, 100, 0.75) 70%, rgba(255, 200, 90, 0) 88%);
+    filter: blur(1px);
+    opacity: 0;
+    animation: headlightPulseCore 4s ease-in-out infinite;
+  }
+
+  /* Сияние — та же форма, но крупнее и сильно размыта, чтобы расходиться за пределы фонаря;
+     т.к. scale берётся от размера самого wrap'а, ореол автоматически пропорционален площади фары. */
+  .headlight-bloom {
+    position: absolute;
+    inset: 0;
+    display: block;
+    transform: scale(2.2);
+    background: radial-gradient(ellipse, rgba(255, 230, 160, 0.9) 0%, rgba(255, 200, 100, 0.5) 40%, rgba(255, 190, 80, 0) 72%);
+    filter: blur(3px);
     opacity: 0;
     animation: headlightPulse 4s ease-in-out infinite;
-  }
-
-  .headlight-glow--car {
-    width: 34px;
-    height: 13px;
-    border-radius: 50%;
-  }
-
-  .headlight-glow--round {
-    width: 20px;
-    height: 20px;
-    border-radius: 9999px;
-  }
-
-  .headlight-glow--sport {
-    width: 24px;
-    height: 15px;
-    border-radius: 50%;
   }
 }
 
@@ -130,8 +130,20 @@ body {
   100% { opacity: 0.7; transform: scale(1); }
 }
 
+/* Без scale — ядро никогда не растёт за пределы своего clip-path контура (иначе видны
+   углы полигона), "дышит" только яркость. Рост и мягкое расползание — только у bloom. */
+@keyframes headlightPulseCore {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  30%  { opacity: 0.82; }
+  70%  { opacity: 0.82; }
+  85%  { opacity: 1; }
+  100% { opacity: 0.82; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .headlight-glow {
+  .headlight-core,
+  .headlight-bloom {
     animation: none;
     opacity: 0.75;
   }

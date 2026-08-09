@@ -60,7 +60,11 @@ export default function FloatingCTA() {
 
   return (
     <>
-      <div className="fixed bottom-6 right-4 md:bottom-24 md:right-24 z-40 flex flex-col items-center gap-3">
+      <div
+        className={`fixed bottom-6 right-4 md:bottom-24 md:right-24 z-40 flex flex-col items-center gap-3 transition-all duration-300 ${
+          visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+      >
         {actions.map((action, i) => (
           <a
             key={action.href}
