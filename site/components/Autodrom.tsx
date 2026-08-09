@@ -10,7 +10,7 @@ export default function Autodrom() {
             Собственный автодром
           </div>
 
-          <h2 className="font-headline text-6xl md:text-8xl font-extrabold leading-none tracking-tighter">
+          <h2 className="font-headline text-6xl md:text-8xl font-black leading-none tracking-tighter">
             АВТОДРОМ<br />ПРЯМО В<br />
             <span className="text-primary">ЦЕНТРЕ</span>
           </h2>

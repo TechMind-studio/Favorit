@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Manrope } from 'next/font/google'
+import { Inter, Golos_Text } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({
@@ -7,10 +7,10 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-const manrope = Manrope({
+const golos = Golos_Text({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-headline',
-  weight: ['500', '600', '700', '800'],
+  weight: ['600', '700', '800', '900'],
 })
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${inter.variable} ${manrope.variable}`}>
+    <html lang="ru" className={`${inter.variable} ${golos.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )

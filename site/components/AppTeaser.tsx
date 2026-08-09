@@ -8,6 +8,12 @@ const features = [
   'Бесплатные билеты ПДД для подготовки',
 ]
 
+const answers = [
+  'Проедете перекрёсток первым',
+  'Уступите дорогу трамваю, выполнив поворот с проезжей части',
+  'Пропустите трамвай, перестроитесь на трамвайные пути попутного направления и выполните с них поворот',
+]
+
 export default function AppTeaser() {
   return (
     <section className="py-24 bg-[#F7F6F4]">
@@ -20,7 +26,7 @@ export default function AppTeaser() {
               Скоро
             </span>
 
-            <h2 className="font-headline text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-gray-900">
+            <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tight leading-tight text-gray-900">
               Мобильное приложение<br />«Фаворит» уже в разработке.
             </h2>
             <p className="text-gray-500 text-lg mt-5 max-w-md font-light leading-relaxed">
@@ -52,21 +58,55 @@ export default function AppTeaser() {
           </AnimateIn>
 
           <AnimateIn direction="right" className="flex justify-center">
-            <div className="relative w-56">
+            <div className="relative w-64">
               <div className="rounded-[2.5rem] border-[6px] border-ink bg-white shadow-xl shadow-black/10 aspect-[9/19] flex flex-col overflow-hidden">
-                <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6">
+                <div className="flex items-center justify-between px-4 pt-3 pb-1">
+                  <span className="text-[9px] font-bold text-gray-400">9:41</span>
+                  <span className="text-[7px] font-black tracking-widest uppercase text-primary bg-primary/10 rounded-full px-2 py-0.5">Скоро</span>
+                </div>
+
+                <div className="flex items-center justify-between px-4 mb-2">
+                  <span className="text-[11px] font-black font-headline text-gray-900">БИЛЕТ 6</span>
+                  <span className="text-[8px] text-gray-400 font-medium">Вопрос 13 из 20</span>
+                </div>
+
+                <div className="mx-4 rounded-xl overflow-hidden aspect-[16/9] relative mb-2.5 bg-gray-100">
                   <Image
-                    src={`${basePath}/img-logo.svg`}
-                    alt="Автошкола Фаворит"
-                    width={56}
-                    height={56}
-                    className="w-14 h-auto opacity-90"
+                    src={`${basePath}/images/app-ticket-illustration.jpg`}
+                    alt="Билет 6, вопрос 13 — фирменная иллюстрация Автошколы Фаворит"
+                    fill
+                    className="object-cover"
                   />
-                  <div className="w-full space-y-2">
-                    <div className="h-2 rounded-full bg-gray-100 w-full" />
-                    <div className="h-2 rounded-full bg-gray-100 w-3/4 mx-auto" />
+                </div>
+
+                <p className="px-4 text-[9.5px] text-gray-700 font-semibold leading-snug mb-2.5">
+                  Вы намерены повернуть налево. Ваши действия?
+                </p>
+
+                <div className="px-4 space-y-1.5">
+                  {answers.map((a, i) => (
+                    <div
+                      key={a}
+                      className={`flex items-start gap-1.5 rounded-lg px-2 py-1.5 text-[8px] leading-tight ${
+                        i === 0 ? 'bg-primary/10 border border-primary/30 text-gray-900' : 'bg-gray-50 text-gray-500'
+                      }`}
+                    >
+                      <span
+                        className={`flex-shrink-0 w-3 h-3 rounded-full flex items-center justify-center text-[7px] font-bold ${
+                          i === 0 ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'
+                        }`}
+                      >
+                        {i + 1}
+                      </span>
+                      {a}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto px-4 pb-4 pt-2.5">
+                  <div className="w-full bg-gray-900 text-white text-[8px] font-black tracking-widest uppercase text-center py-2 rounded-full">
+                    Ответить
                   </div>
-                  <span className="text-[9px] font-black tracking-widest uppercase text-gray-300">Скоро</span>
                 </div>
               </div>
               <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-primary/5" />
