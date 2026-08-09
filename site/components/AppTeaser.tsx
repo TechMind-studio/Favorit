@@ -1,17 +1,10 @@
-import Image from 'next/image'
 import AnimateIn from './AnimateIn'
-import { basePath } from '@/lib/basePath'
+import TicketScreen from './TicketScreen'
 
 const features = [
   'Онлайн-запись на занятия и автодром',
+  'Билеты ПДД: ошибка сразу ведёт к разбору в видеоуроке',
   'Электронный дневник вождения и прогресс',
-  'Бесплатные билеты ПДД для подготовки',
-]
-
-const answers = [
-  'Проедете перекрёсток первым',
-  'Уступите дорогу трамваю, выполнив поворот с проезжей части',
-  'Пропустите трамвай, перестроитесь на трамвайные пути попутного направления и выполните с них поворот',
 ]
 
 export default function AppTeaser() {
@@ -58,58 +51,14 @@ export default function AppTeaser() {
           </AnimateIn>
 
           <AnimateIn direction="right" className="flex justify-center">
-            <div className="relative w-64">
-              <div className="rounded-[2.5rem] border-[6px] border-ink bg-white shadow-xl shadow-black/10 aspect-[9/19] flex flex-col overflow-hidden">
-                <div className="flex items-center justify-between px-4 pt-3 pb-1">
-                  <span className="text-[9px] font-bold text-gray-400">9:41</span>
-                  <span className="text-[7px] font-black tracking-widest uppercase text-primary bg-primary/10 rounded-full px-2 py-0.5">Скоро</span>
-                </div>
-
-                <div className="flex items-center justify-between px-4 mb-2">
-                  <span className="text-[11px] font-black font-headline text-gray-900">БИЛЕТ 6</span>
-                  <span className="text-[8px] text-gray-400 font-medium">Вопрос 13 из 20</span>
-                </div>
-
-                <div className="mx-4 rounded-xl overflow-hidden aspect-[16/9] relative mb-2.5 bg-gray-100">
-                  <Image
-                    src={`${basePath}/images/app-ticket-illustration.jpg`}
-                    alt="Билет 6, вопрос 13 — фирменная иллюстрация Автошколы Фаворит"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                <p className="px-4 text-[9.5px] text-gray-700 font-semibold leading-snug mb-2.5">
-                  Вы намерены повернуть налево. Ваши действия?
-                </p>
-
-                <div className="px-4 space-y-1.5">
-                  {answers.map((a, i) => (
-                    <div
-                      key={a}
-                      className={`flex items-start gap-1.5 rounded-lg px-2 py-1.5 text-[8px] leading-tight ${
-                        i === 0 ? 'bg-primary/10 border border-primary/30 text-gray-900' : 'bg-gray-50 text-gray-500'
-                      }`}
-                    >
-                      <span
-                        className={`flex-shrink-0 w-3 h-3 rounded-full flex items-center justify-center text-[7px] font-bold ${
-                          i === 0 ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'
-                        }`}
-                      >
-                        {i + 1}
-                      </span>
-                      {a}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-auto px-4 pb-4 pt-2.5">
-                  <div className="w-full bg-gray-900 text-white text-[8px] font-black tracking-widest uppercase text-center py-2 rounded-full">
-                    Ответить
-                  </div>
-                </div>
-              </div>
+            <div className="relative" style={{ width: 390 * 0.62, height: 844 * 0.62 }}>
+              <span className="absolute -top-3 -right-3 z-10 text-[9px] font-black tracking-widest uppercase text-white bg-primary rounded-full px-3 py-1.5 shadow-lg shadow-primary/30">
+                Скоро
+              </span>
               <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-primary/5" />
+              <div style={{ ['--phone-scale' as string]: '0.62' }}>
+                <TicketScreen />
+              </div>
             </div>
           </AnimateIn>
 
