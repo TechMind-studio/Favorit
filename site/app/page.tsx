@@ -5,6 +5,7 @@ import TrustBar from '@/components/TrustBar'
 import Prices from '@/components/Prices'
 import CarsCarousel from '@/components/CarsCarousel'
 import Autodrom from '@/components/Autodrom'
+import AppTeaser from '@/components/AppTeaser'
 import Reviews from '@/components/Reviews'
 import Branches from '@/components/Branches'
 import Footer from '@/components/Footer'
@@ -21,6 +22,7 @@ export default function Home() {
         <Prices />
         <CarsCarousel />
         <Autodrom />
+        <AppTeaser />
         <Reviews />
         <Branches />
       </main>

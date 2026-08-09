@@ -68,9 +68,9 @@ const items = [
 
 export default function TrustBar() {
   return (
-    <div className="bg-white py-5 overflow-hidden">
+    <div className="bg-white py-6 border-b border-gray-100 overflow-hidden">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-3 md:gap-x-10">
+        <div className="flex flex-wrap justify-center gap-x-9 gap-y-3">
           {items.map((item) => (
             <div key={item.text} className="flex items-center gap-2 text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">
               <span className="text-primary flex-shrink-0">{item.icon}</span>

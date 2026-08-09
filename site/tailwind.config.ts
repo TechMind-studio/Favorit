@@ -15,10 +15,11 @@ const config: Config = {
           light: '#E84047',
         },
         tertiary: '#005ca6',
+        ink: '#0B0B0C',
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        headline: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        headline: ['var(--font-headline)', 'system-ui', 'sans-serif'],
       },
     },
   },
