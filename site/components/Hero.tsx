@@ -6,79 +6,101 @@ const badges = [
   { value: 'Автодром', label: 'в центре города' },
 ]
 
-// Координаты обведены вручную по фото (кликер) — left/top это левый верхний угол
-// bounding-box'а фары, clip-path — точный периметр внутри этого box'а.
-const carLights = [
+// Фары обведены вручную кликером tools/lights-picker.html: left/top — левый верхний
+// угол bounding-box'а линзы в процентах от hero-pair.png, clip — её точный контур
+// внутри этого box'а. Перерисовал картинку — перекликай и вставь новый массив.
+// kind: 'turn' — поворотник (янтарный, мигает), иначе обычная фара (тёплая, тлеет).
+type Lamp = { left: string; top: string; width: string; height: string; clip?: string; delay: string; kind?: 'lamp' | 'turn' }
+
+const heroLights: Lamp[] = [
   {
-    // красная машина, ближняя фара
-    left: '19.25%', top: '34.88%', width: '9.21%', height: '5.22%',
-    clip: 'polygon(0.00% 0.00%, 100.00% 68.57%, 94.55% 100.00%, 13.64% 77.14%, 0.91% 5.71%)',
-    delay: '0.1s',
+    // фара 1
+    left: '31.68%', top: '25.42%', width: '7.47%', height: '11.52%',
+    clip: 'polygon(0.60% 0.00%, 0.00% 4.91%, 21.15% 55.28%, 21.83% 64.35%, 94.83% 100.00%, 99.74% 98.72%, 100.00% 92.04%, 91.32% 64.10%, 81.95% 51.80%, 61.81% 35.84%)',
+    kind: 'lamp',
+    delay: '0.15s',
   },
   {
-    // красная машина, дальняя фара (у решётки)
-    left: '42.09%', top: '35.32%', width: '2.51%', height: '3.43%',
-    clip: 'polygon(0.00% 60.87%, 90.00% 0.00%, 100.00% 69.57%, 16.67% 100.00%, 0.00% 69.57%)',
-    delay: '0.1s',
+    // фара 2
+    left: '41.72%', top: '31.61%', width: '1.34%', height: '6.17%',
+    clip: 'polygon(12.90% 38.74%, 95.55% 0.00%, 100.00% 75.21%, 78.36% 92.32%, 0.00% 100.00%)',
+    kind: 'lamp',
+    delay: '0.27s',
   },
   {
-    // чёрная машина, световая полоса (DRL)
-    left: '47.36%', top: '33.67%', width: '22.09%', height: '2.83%',
-    clip: 'polygon(0.76% 0.00%, 3.03% 0.00%, 31.06% 63.16%, 39.02% 68.42%, 97.73% 36.84%, 99.62% 0.00%, 100.00% 31.58%, 96.21% 73.68%, 38.26% 100.00%, 5.30% 42.11%, 6.06% 78.95%, 3.03% 73.68%, 0.00% 5.26%)',
-    delay: '0.4s',
+    // поворотник 1
+    left: '24.98%', top: '40.57%', width: '2.34%', height: '3.33%',
+    clip: 'polygon(0.00% 53.36%, 2.61% 16.86%, 24.85% 3.22%, 75.48% 0.00%, 100.00% 39.53%, 94.27% 69.73%, 79.50% 98.64%, 50.39% 100.00%, 13.32% 84.24%)',
+    kind: 'turn',
+    delay: '0s',
   },
   {
-    // чёрная машина, сама фара (линза под DRL)
-    left: '48.54%', top: '38.60%', width: '4.18%', height: '7.74%',
-    clip: 'polygon(0.00% 0.00%, 52.00% 13.46%, 100.00% 80.77%, 74.00% 100.00%, 16.00% 96.15%, 18.00% 75.00%, 0.00% 3.85%)',
-    delay: '0.4s',
+    // поворотник 2
+    left: '40.08%', top: '45.05%', width: '1.39%', height: '2.75%',
+    clip: 'polygon(0.00% 49.58%, 16.47% 9.28%, 42.69% 3.38%, 53.46% 0.00%, 100.00% 40.06%, 96.39% 72.74%, 82.43% 96.65%, 56.21% 100.00%, 39.08% 96.65%, 16.13% 83.85%, 1.23% 81.55%)',
+    kind: 'turn',
+    delay: '0s',
   },
   {
-    // белая машина, ближняя фара
-    left: '74.31%', top: '32.79%', width: '9.87%', height: '6.12%',
-    clip: 'polygon(0.00% 0.00%, 100.00% 68.29%, 88.98% 100.00%, 30.51% 82.93%, 8.47% 46.34%, 0.00% 2.44%)',
-    delay: '0.65s',
+    // фара 3
+    left: '51.07%', top: '34.46%', width: '1.06%', height: '2.09%',
+    clip: 'polygon(100.00% 42.69%, 54.38% 100.00%, 0.00% 47.15%, 21.46% 0.00%)',
+    kind: 'lamp',
+    delay: '0.39s',
   },
   {
-    // белая машина, дальняя фара
-    left: '93.97%', top: '32.05%', width: '1.67%', height: '5.66%',
-    clip: 'polygon(40.00% 63.16%, 70.00% 100.00%, 100.00% 71.05%, 80.00% 21.05%, 0.00% 0.00%, 40.00% 31.58%)',
-    delay: '0.65s',
+    // фара 4
+    left: '69.16%', top: '33.63%', width: '9.65%', height: '3.52%',
+    clip: 'polygon(0.00% 70.73%, 15.31% 59.02%, 16.68% 70.64%, 91.58% 25.99%, 94.85% 5.50%, 100.00% 0.00%, 93.89% 87.25%, 85.27% 89.34%, 88.59% 54.03%, 7.98% 100.00%)',
+    kind: 'lamp',
+    delay: '0.51s',
+  },
+  {
+    // фара 5
+    left: '74.12%', top: '40.80%', width: '3.62%', height: '4.00%',
+    clip: 'polygon(23.61% 40.11%, 100.00% 0.00%, 93.22% 85.97%, 0.00% 100.00%)',
+    kind: 'lamp',
+    delay: '0.63s',
+  },
+  {
+    // фара 6
+    left: '72.75%', top: '44.39%', width: '4.59%', height: '5.57%',
+    clip: 'polygon(28.61% 14.14%, 100.00% 0.00%, 98.53% 28.88%, 89.78% 83.42%, 4.13% 100.00%, 0.00% 82.04%)',
+    kind: 'lamp',
+    delay: '0.75s',
+  },
+  {
+    // фара 7
+    left: '72.70%', top: '49.77%', width: '4.36%', height: '3.57%',
+    clip: 'polygon(3.96% 22.06%, 99.02% 0.00%, 100.00% 76.53%, 94.96% 83.60%, 39.58% 100.00%, 0.00% 33.13%)',
+    kind: 'lamp',
+    delay: '0.87s',
+  },
+  {
+    // фара 8
+    left: '49.24%', top: '41.50%', width: '0.85%', height: '8.44%',
+    clip: 'polygon(0.00% 56.63%, 26.71% 73.84%, 28.52% 93.26%, 74.92% 100.00%, 100.00% 83.57%, 74.91% 0.00%)',
+    kind: 'lamp',
+    delay: '0.99s',
   },
 ]
 
-const motoLights = [
-  {
-    // мотоцикл 1 (Yamaha), круглая фара
-    left: '12.16%', top: '27.99%', width: '3.79%', height: '8.53%',
-    clip: 'polygon(32.56% 0.00%, 67.44% 4.69%, 83.72% 17.19%, 95.35% 40.62%, 100.00% 68.75%, 86.05% 84.38%, 65.12% 100.00%, 32.56% 96.88%, 13.95% 79.69%, 4.65% 62.50%, 0.00% 46.88%, 2.33% 25.00%, 11.63% 10.94%, 27.91% 1.56%)',
-    delay: '1.1s',
-  },
-  {
-    // мотоцикл 2 (средний), круглая фара
-    left: '38.41%', top: '25.61%', width: '5.02%', height: '8.80%',
-    clip: 'polygon(8.77% 7.58%, 28.07% 0.00%, 54.39% 0.00%, 68.42% 6.06%, 100.00% 80.30%, 80.70% 92.42%, 59.65% 100.00%, 35.09% 96.97%, 19.30% 87.88%, 8.77% 75.76%, 5.26% 65.15%, 1.75% 50.00%, 0.00% 34.85%, 3.51% 18.18%, 8.77% 10.61%)',
-    delay: '1.3s',
-  },
-  {
-    // мотоцикл 2, доп. световой блик рядом с фарой
-    left: '42.47%', top: '25.46%', width: '1.50%', height: '6.13%',
-    clip: 'polygon(0.00% 0.00%, 23.53% 0.00%, 88.24% 32.61%, 100.00% 67.39%, 100.00% 100.00%, 5.88% 4.35%)',
-    delay: '1.45s',
-  },
-  {
-    // Honda CBR, угловатая фара
-    left: '68.99%', top: '37.99%', width: '7.84%', height: '6.53%',
-    clip: 'polygon(4.49% 48.98%, 65.17% 12.24%, 100.00% 0.00%, 76.40% 59.18%, 73.03% 79.59%, 6.74% 100.00%, 0.00% 93.88%, 3.37% 51.02%)',
-    delay: '1.6s',
-  },
-  {
-    // Honda CBR, вторая фара
-    left: '60.70%', top: '37.34%', width: '3.35%', height: '6.80%',
-    clip: 'polygon(0.00% 0.00%, 86.84% 50.98%, 100.00% 100.00%, 13.16% 64.71%, 0.00% 3.92%)',
-    delay: '1.6s',
-  },
-]
+function Headlight({ l }: { l: Lamp }) {
+  const shape = l.clip ? { clipPath: l.clip } : { borderRadius: '50%' }
+  const isTurn = l.kind === 'turn'
+  return (
+    <span className="headlight-wrap" style={{ left: l.left, top: l.top, width: l.width, height: l.height }}>
+      <span
+        className={`headlight-bloom${isTurn ? ' headlight-bloom--turn' : ''}`}
+        style={{ borderRadius: '50%', animationDelay: l.delay }}
+      />
+      <span
+        className={`headlight-core${isTurn ? ' headlight-core--turn' : ''}`}
+        style={{ ...shape, animationDelay: l.delay }}
+      />
+    </span>
+  )
+}
 
 export default function Hero() {
   return (
@@ -120,47 +142,34 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* Мотоцикл и машина съезжаются к эмблеме: слева категория A, справа B.
+              Оба на одном студийном снимке (tools/cutout-hero.py убирает белый фон),
+              поэтому ни зеркалить, ни подгонять масштаб между ними не нужно. */}
           <div className="relative order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
-            <div className="relative flex flex-col w-full">
-              <div className="relative w-full aspect-[1195/671]">
+            <div className="flex flex-col items-center">
+
+              <div className="relative w-[26%] max-w-[150px] aspect-square mb-1">
                 <Image
-                  src={`${basePath}/images/cars/cars-fleet-nobg.png`}
-                  alt="Учебные автомобили"
+                  src={`${basePath}/logo.svg`}
+                  alt="Автошкола Фаворит"
                   fill
-                  className="object-contain object-center"
+                  className="object-contain"
                   priority
                 />
-                {carLights.map((l, i) => (
-                  <span
-                    key={i}
-                    className="headlight-wrap"
-                    style={{ left: l.left, top: l.top, width: l.width, height: l.height }}
-                  >
-                    <span className="headlight-bloom" style={{ borderRadius: '50%', animationDelay: l.delay }} />
-                    <span className="headlight-core" style={{ clipPath: l.clip, animationDelay: l.delay }} />
-                  </span>
-                ))}
               </div>
-              {/* Нахлёст в % от ширины колонки, а не в px: с фиксированным -mt-24 на узком
-                  экране мотоциклы наезжали на машины почти вдвое сильнее, чем на десктопе. */}
-              <div className="relative w-[78%] lg:w-[68%] aspect-[1135/750] -mt-[15%]">
+              <p className="text-primary text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] mb-3">
+                Действительно учим!
+              </p>
+
+              <div className="relative w-full aspect-[1166/556]">
                 <Image
-                  src={`${basePath}/images/cars/moto-fleet-nobg.png`}
-                  alt="Учебные мотоциклы"
+                  src={`${basePath}/images/cars/hero-pair.png`}
+                  alt="Учебный мотоцикл Honda CBR и автомобиль Omoda C5"
                   fill
-                  className="object-contain object-center"
+                  className="object-contain object-bottom"
                   priority
                 />
-                {motoLights.map((l, i) => (
-                  <span
-                    key={i}
-                    className="headlight-wrap"
-                    style={{ left: l.left, top: l.top, width: l.width, height: l.height }}
-                  >
-                    <span className="headlight-bloom" style={{ borderRadius: '50%', animationDelay: l.delay }} />
-                    <span className="headlight-core" style={{ clipPath: l.clip, animationDelay: l.delay }} />
-                  </span>
-                ))}
+                {heroLights.map((l, i) => <Headlight key={i} l={l} />)}
               </div>
             </div>
           </div>

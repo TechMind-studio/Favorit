@@ -82,30 +82,49 @@ body {
     pointer-events: none;
   }
 
-  /* Ядро — маска по периметру фонаря (clip-path/border-radius задаются инлайн). Blur здесь
-     сглаживает грани полигона (обводка по клику не идеально гладкая), без scale — форма
-     не должна "дрожать" при пульсации, это отдаётся размытому bloom-слою снаружи. */
+  /* Ядро — маска по периметру фонаря (clip-path/border-radius задаются инлайн).
+     scale(0.93) поджимает форму внутрь, а blur размывает край: обводка кликом никогда
+     не идеально точна, и без этих двух вещей острые углы полигона торчат за линзу
+     белыми треугольниками. Пульсация — только по яркости, форма не «дышит».
+     6s — это ровно длина общего сценария сцены (см. keyframes ниже): все фары
+     вспыхивают вместе, гаснут, дальше моргают поворотники, и по кругу. */
   .headlight-core {
     position: absolute;
     inset: 0;
     display: block;
+    transform: scale(0.93);
     background: radial-gradient(ellipse, #fffbe8 0%, rgba(255, 225, 140, 0.95) 45%, rgba(255, 205, 100, 0.75) 70%, rgba(255, 200, 90, 0) 88%);
-    filter: blur(1px);
+    filter: blur(2.4px);
     opacity: 0;
-    animation: headlightPulseCore 4s ease-in-out infinite;
+    animation: headlightPulseCore 6s ease-in-out infinite;
   }
 
-  /* Сияние — та же форма, но крупнее и сильно размыта, чтобы расходиться за пределы фонаря;
-     т.к. scale берётся от размера самого wrap'а, ореол автоматически пропорционален площади фары. */
+  /* Сияние — тот же контур, но крупнее и сильно размыт, чтобы расходиться за пределы
+     фонаря. Форму наследует от ядра (clip-path приходит инлайн), иначе у длинной
+     световой полосы вокруг висел бы круглый блин. Масштаб статичный: анимация
+     трогает только opacity, чтобы фаза выключения не «сжимала» ореол рывком. */
   .headlight-bloom {
     position: absolute;
     inset: 0;
     display: block;
-    transform: scale(2.2);
+    transform: scale(1.9);
     background: radial-gradient(ellipse, rgba(255, 230, 160, 0.9) 0%, rgba(255, 200, 100, 0.5) 40%, rgba(255, 190, 80, 0) 72%);
-    filter: blur(3px);
+    filter: blur(5px);
     opacity: 0;
-    animation: headlightPulse 4s ease-in-out infinite;
+    animation: headlightPulse 6s ease-in-out infinite;
+  }
+
+  /* Поворотник — тот же механизм, но янтарный, и включён в ту же 6-секундную сцену:
+     молчит, пока горят фары, и мигает во второй половине цикла. steps(1,end) — чтобы
+     переключение было резким, как у настоящей лампы с реле, а не плавным затуханием. */
+  .headlight-core--turn {
+    background: radial-gradient(ellipse, #fff2cf 0%, rgba(255, 176, 46, 0.95) 45%, rgba(245, 140, 20, 0.8) 72%, rgba(240, 130, 10, 0) 90%);
+    animation: turnBlinkCore 6s steps(1, end) infinite;
+  }
+
+  .headlight-bloom--turn {
+    background: radial-gradient(ellipse, rgba(255, 180, 60, 0.9) 0%, rgba(245, 140, 20, 0.5) 40%, rgba(240, 130, 10, 0) 72%);
+    animation: turnBlink 6s steps(1, end) infinite;
   }
 }
 
@@ -126,29 +145,69 @@ body {
   100% { left: -220px; transform: scaleX(-1); }
 }
 
+/* Общий сценарий на 6 секунд, один на всю сцену (см. .headlight-core и его соседей):
+     0.0s–~1.0s   каждая фара вспыхивает — момент старта у каждой свой за счёт
+                  небольшого animation-delay в разметке (0.15s…0.99s), отсюда
+                  ощущение, что фары загораются волной, а не все разом щелчком
+     ~1.0s–2.5s   ровный тёплый свет
+     ~2.5s–2.8s   фары гаснут
+     2.8s–4.1s    пауза — темнота перед поворотниками
+     4.1s–5.3s    (см. turnBlink) поворотники моргают трижды
+     5.3s–6.0s    пауза, дальше цикл повторяется с нуля
+   Проценты считаются от старта КОНКРЕТНОЙ фары (после её animation-delay), поэтому
+   у фары с самой большой задержкой (0.99s) фаза выключения на ~0.8s позже, чем у
+   первой — это тот же эффект волны, но при выключении, что смотрится естественно. */
 @keyframes headlightPulse {
-  0%   { opacity: 0;   transform: scale(0.4); }
-  15%  { opacity: 1;   transform: scale(1.25); }
-  30%  { opacity: 0.7; transform: scale(1); }
-  70%  { opacity: 0.7; transform: scale(1); }
-  85%  { opacity: 1;   transform: scale(1.1); }
-  100% { opacity: 0.7; transform: scale(1); }
+  0%   { opacity: 0; }
+  4%   { opacity: 0.75; }
+  10%  { opacity: 0.55; }
+  42%  { opacity: 0.55; }
+  46%  { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 /* Без scale — ядро никогда не растёт за пределы своего clip-path контура (иначе видны
    углы полигона), "дышит" только яркость. Рост и мягкое расползание — только у bloom. */
 @keyframes headlightPulseCore {
   0%   { opacity: 0; }
-  15%  { opacity: 1; }
-  30%  { opacity: 0.82; }
-  70%  { opacity: 0.82; }
-  85%  { opacity: 1; }
-  100% { opacity: 0.82; }
+  4%   { opacity: 1; }
+  10%  { opacity: 0.85; }
+  42%  { opacity: 0.85; }
+  46%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Поворотники синхронны друг с другом (delay: 0s у обоих) и ждут, пока отгорят
+   все фары, — включаются только во второй половине общего 6-секундного цикла.
+   Три чётких моргания step-функцией, как у лампы с реле, без плавного затухания. */
+@keyframes turnBlink {
+  0%, 66%  { opacity: 0; }
+  68%      { opacity: 0.7; }
+  72%      { opacity: 0; }
+  76%      { opacity: 0.7; }
+  80%      { opacity: 0; }
+  84%      { opacity: 0.7; }
+  88%, 100% { opacity: 0; }
+}
+
+@keyframes turnBlinkCore {
+  0%, 66%  { opacity: 0; }
+  68%      { opacity: 1; }
+  72%      { opacity: 0; }
+  76%      { opacity: 1; }
+  80%      { opacity: 0; }
+  84%      { opacity: 1; }
+  88%, 100% { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .headlight-core,
   .headlight-bloom {
+    animation: none;
+    opacity: 0.75;
+  }
+  .headlight-core--turn,
+  .headlight-bloom--turn {
     animation: none;
     opacity: 0.75;
   }

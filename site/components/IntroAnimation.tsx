@@ -26,22 +26,33 @@ export default function IntroAnimation() {
       />
 
       <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <div className="text-center">
-          <p className="font-headline font-normal text-white/60 text-xs uppercase tracking-[0.5em] mb-1">Автошкола</p>
-          <div className="font-headline font-bold text-[96px] tracking-normal leading-none text-white uppercase">
+        <div className="text-center px-4">
+          <p className="font-headline font-normal text-white/60 text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-1">
+            Автошкола · Новосибирск
+          </p>
+          {/* Кегль резиновый: на 96px «ФАВОРИТ» занимает 496px и на телефоне
+              вылезал за оба края экрана. 15vw даёт ~57px при ширине 380. */}
+          <div
+            className="font-headline font-bold tracking-normal leading-none text-white uppercase"
+            style={{ fontSize: 'clamp(2.5rem, 15vw, 96px)' }}
+          >
             ФАВОРИТ
           </div>
           <div className="h-0.5 w-20 bg-primary mx-auto mt-5 rounded-full" />
-          <p className="text-white/30 text-[9px] font-bold uppercase tracking-[0.4em] mt-3">Новосибирск</p>
+          <p className="text-white/45 text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.35em] mt-3">
+            Действительно учим!
+          </p>
         </div>
       </div>
 
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-36 pointer-events-none z-20">
+      {/* Ширины транспорта резиновые: при фиксированных 320px машина занимала
+          84% ширины телефона и перекрывала весь экран. */}
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-24 sm:h-36 pointer-events-none z-20">
 
         <div
           className="absolute top-0 h-full"
           style={{
-            width: 320,
+            width: 'clamp(150px, 42vw, 320px)',
             animation: 'introCarDrive 2.3s cubic-bezier(0.4, 0, 0.3, 1) forwards',
           }}
         >
@@ -49,9 +60,9 @@ export default function IntroAnimation() {
         </div>
 
         <div
-          className="absolute h-[80px]"
+          className="absolute h-[54px] sm:h-[80px]"
           style={{
-            width: 175,
+            width: 'clamp(85px, 23vw, 175px)',
             bottom: 0,
             animation: 'introMotoDrive 2.3s cubic-bezier(0.4, 0, 0.3, 1) forwards',
           }}
