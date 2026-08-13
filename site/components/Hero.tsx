@@ -195,20 +195,21 @@ export default function Hero() {
           <div className="relative order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
             <div className="flex flex-col items-center">
 
-              {/* Логотип лежит поверх стыка мотоцикла и машины (не над всей группой —
-                  иначе он визуально центрируется по машине, она шире), left считается
-                  от границы moto/car: ширина мото (30%) + половина зазора (3%/2). */}
-              <div
-                className="absolute z-10 w-[34%] max-w-[190px] aspect-square"
-                style={{ left: '31.5%', top: '30%', transform: 'translate(-50%, -50%)' }}
-              >
-                <Image
-                  src={`${basePath}/logo-round.svg`}
-                  alt="Автошкола Фаворит"
-                  fill
-                  className="object-contain"
-                  priority
-                />
+              {/* Логотип — над транспортом (не поверх!), но центрирован не по всей
+                  группе (иначе съезжает к машине, она шире), а ровно по стыку
+                  moto/car: обёртка шириной 63% = 2× (30% moto + половина зазора
+                  1.5%) от левого края, flex центрирует логотип внутри неё — так
+                  его середина попадает точно на границу мотоцикла и машины. */}
+              <div className="w-[63%] flex justify-center mb-3">
+                <div className="relative w-[54%] max-w-[190px] aspect-square">
+                  <Image
+                    src={`${basePath}/logo-round.svg`}
+                    alt="Автошкола Фаворит"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </div>
 
               <div className="flex w-full items-end justify-center gap-[3%]">
