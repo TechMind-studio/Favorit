@@ -70,10 +70,10 @@ export default function TrustBar() {
   return (
     <div className="bg-white py-6 border-b border-gray-100 overflow-hidden">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-x-9 gap-y-3">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-9">
           {items.map((item) => (
-            <div key={item.text} className="flex items-center gap-2 text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">
-              <span className="text-primary flex-shrink-0">{item.icon}</span>
+            <div key={item.text} className="flex items-start gap-2 text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-widest">
+              <span className="text-primary flex-shrink-0 mt-0.5">{item.icon}</span>
               {item.text}
             </div>
           ))}

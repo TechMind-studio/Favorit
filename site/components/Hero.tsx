@@ -161,7 +161,7 @@ export default function Hero() {
             <p className="text-primary text-xs font-bold uppercase tracking-[0.15em] sm:tracking-[0.3em] mb-5">
               Автошкола Фаворит · Новосибирск
             </p>
-            <h1 className="font-headline text-5xl md:text-6xl lg:text-[4.5rem] font-black tracking-tight leading-[0.97] text-gray-900">
+            <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-black tracking-tight leading-[0.97] text-gray-900">
               Действительно<br />
               <span className="text-primary">учим!</span>
             </h1>
