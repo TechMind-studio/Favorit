@@ -195,7 +195,13 @@ export default function Hero() {
           <div className="relative order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
             <div className="flex flex-col items-center">
 
-              <div className="relative w-[26%] max-w-[150px] aspect-square mb-3">
+              {/* Логотип лежит поверх стыка мотоцикла и машины (не над всей группой —
+                  иначе он визуально центрируется по машине, она шире), left считается
+                  от границы moto/car: ширина мото (30%) + половина зазора (3%/2). */}
+              <div
+                className="absolute z-10 w-[34%] max-w-[190px] aspect-square"
+                style={{ left: '31.5%', top: '30%', transform: 'translate(-50%, -50%)' }}
+              >
                 <Image
                   src={`${basePath}/logo-round.svg`}
                   alt="Автошкола Фаворит"
