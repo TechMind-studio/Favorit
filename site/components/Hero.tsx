@@ -117,9 +117,12 @@ function Headlight({ l }: { l: Lamp }) {
   const shape = l.clip ? { clipPath: l.clip } : { borderRadius: '50%' }
   const showLamp = l.kind !== 'turn'
   const showTurn = l.kind === 'turn' || l.kind === 'dual'
-  // Секвентальная волна — только у блок-фары машины (kind:'dual'); поворотник
-  // мотоцикла (kind:'turn') мигает как обычная лампа с реле, без бега света.
-  const waveClass = l.kind === 'dual' ? ' headlight-bloom--wave' : ''
+  // Секвентальная волна — только у ЧЁТКОГО ядра блок-фары машины (kind:'dual').
+  // Bloom (размытое сияние, scale 2.6) специально НЕ участвует в волне: если его
+  // растить от края, а не от центра, огромное пятно расползается почти целиком
+  // в одну сторону и засвечивает соседние панели кузова — bloom остаётся плоским
+  // миганием по центру, как у обычной фары. Поворотник мотоцикла (kind:'turn')
+  // тоже мигает как обычная лампа с реле, без волны.
   const waveClassCore = l.kind === 'dual' ? ' headlight-core--wave' : ''
   return (
     <span className="headlight-wrap" style={{ left: l.left, top: l.top, width: l.width, height: l.height }}>
@@ -132,8 +135,8 @@ function Headlight({ l }: { l: Lamp }) {
       {showTurn && (
         <>
           <span
-            className={`headlight-bloom headlight-bloom--turn${waveClass}`}
-            style={{ borderRadius: '50%', animationDelay: l.turnDelay ?? l.delay, transformOrigin: l.waveFrom ?? 'center' }}
+            className="headlight-bloom headlight-bloom--turn"
+            style={{ borderRadius: '50%', animationDelay: l.turnDelay ?? l.delay }}
           />
           <span
             className={`headlight-core headlight-core--turn${waveClassCore}`}
