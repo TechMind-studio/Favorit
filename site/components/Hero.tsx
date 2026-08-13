@@ -162,8 +162,8 @@ export default function Hero() {
               Автошкола Фаворит · Новосибирск
             </p>
             <h1 className="font-headline text-5xl md:text-6xl lg:text-[4.5rem] font-black tracking-tight leading-[0.97] text-gray-900">
-              Учим водить<br />
-              <span className="text-primary">уверенно.</span>
+              Действительно<br />
+              <span className="text-primary">учим!</span>
             </h1>
           </div>
 
@@ -195,18 +195,15 @@ export default function Hero() {
           <div className="relative order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
             <div className="flex flex-col items-center">
 
-              <div className="relative w-[26%] max-w-[150px] aspect-square mb-1">
+              <div className="relative w-[26%] max-w-[150px] aspect-square mb-3">
                 <Image
-                  src={`${basePath}/logo.svg`}
+                  src={`${basePath}/logo-round.svg`}
                   alt="Автошкола Фаворит"
                   fill
                   className="object-contain"
                   priority
                 />
               </div>
-              <p className="text-primary text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] mb-3">
-                Действительно учим!
-              </p>
 
               <div className="flex w-full items-end justify-center gap-[3%]">
                 <div className="relative w-[30%] aspect-[541/556]">
