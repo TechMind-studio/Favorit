@@ -184,7 +184,7 @@ export default function Hero() {
               </p>
 
               <div className="flex w-full items-end justify-center gap-[3%]">
-                <div className="relative w-[28%] aspect-[541/556]">
+                <div className="relative w-[30%] aspect-[541/556]">
                   <Image
                     src={`${basePath}/images/cars/moto-solo.png`}
                     alt="Учебный мотоцикл Honda CBR"
@@ -195,7 +195,7 @@ export default function Hero() {
                   {motoLights.map((l, i) => <Headlight key={i} l={l} />)}
                 </div>
 
-                <div className="relative w-[65%] aspect-[597/368]">
+                <div className="relative w-[62%] aspect-[597/368]">
                   <Image
                     src={`${basePath}/images/cars/car-solo.png`}
                     alt="Учебный автомобиль Omoda C5"
