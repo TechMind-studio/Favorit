@@ -230,6 +230,25 @@ body {
   88%, 100%   { opacity: 0; transform: scale(0.02, 0.93); }
 }
 
+/* На мобильном (та же граница, что переключает Hero.tsx на одну колонку) картинки
+   мото/машины мельче, и тот же свет на глаз выглядит тусклее рядом с уменьшённой
+   сценой — усиливаем яркость и охват сияния ядра и bloom, у фар и у поворотников. */
+@media (max-width: 1023px) {
+  .headlight-core,
+  .headlight-core--turn {
+    filter: blur(2px) brightness(1.4) saturate(1.15);
+  }
+
+  .headlight-bloom {
+    transform: scale(3.1);
+    filter: blur(9px) brightness(1.35);
+  }
+
+  .headlight-bloom--turn {
+    filter: blur(9px) brightness(1.35) saturate(1.15);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .headlight-core,
   .headlight-bloom {
