@@ -117,7 +117,11 @@ body {
 
   /* Поворотник — тот же механизм, но янтарный, и включён в ту же 6-секундную сцену:
      молчит, пока горят фары, и мигает во второй половине цикла. steps(1,end) — чтобы
-     переключение было резким, как у настоящей лампы с реле, а не плавным затуханием. */
+     переключение было резким, как у настоящей лампы с реле, а не плавным затуханием.
+     Это базовое (мгновенное) мигание — им пользуется поворотник мотоцикла (kind:'turn').
+     У блок-фары машины (kind:'dual') поверх добавляется .headlight-core--wave /
+     .headlight-bloom--wave ниже — они идут позже в файле и той же специфичностью
+     переопределяют animation на бегущую волну. */
   .headlight-core--turn {
     background: radial-gradient(ellipse, #fffaf0 0%, #fff2cf 30%, rgba(255, 176, 46, 1) 60%, rgba(245, 140, 20, 0.9) 78%, rgba(240, 130, 10, 0) 92%);
     animation: turnBlinkCore 6s steps(1, end) infinite;
@@ -126,6 +130,21 @@ body {
   .headlight-bloom--turn {
     background: radial-gradient(ellipse, rgba(255, 200, 100, 1) 0%, rgba(250, 160, 30, 0.8) 35%, rgba(240, 130, 10, 0) 70%);
     animation: turnBlink 6s steps(1, end) infinite;
+  }
+
+  /* Секвентальный поворотник блок-фары машины: та же геометрия (клип идёт инлайн),
+     но каждая вспышка — бегущая волна СВЕТА ОТ ВНУТРЕННЕГО КРАЯ (ближе к решётке)
+     К ВНЕШНЕМУ, а не мгновенный щелчок. scaleX растёт от 0.02 до полного масштаба,
+     откуда расти — задаёт inline transform-origin (см. waveFrom в Hero.tsx). У ядра
+     и у сияния своя пара keyframes с одним и тем же таймингом (turnWaveCore/
+     turnWaveBloom), иначе резкий контур убегает вперёд размытого ореола и волна
+     не читается. */
+  .headlight-core--wave {
+    animation: turnWaveCore 6s ease-out infinite;
+  }
+
+  .headlight-bloom--wave {
+    animation: turnWaveBloom 6s ease-out infinite;
   }
 }
 
@@ -199,6 +218,34 @@ body {
   80%      { opacity: 0; }
   84%      { opacity: 1; }
   88%, 100% { opacity: 0; }
+}
+
+/* Тот же ритм (три вспышки на 68-72%, 76-80%, 84-88%), но у ядра каждая вспышка —
+   не щелчок opacity, а рост scaleX от внутреннего края (transform-origin, см. Hero.tsx)
+   к внешнему: 2% цикла (0.12s) на разгон волны ease-out наружу, потом steps(1,end)
+   держит фару полностью раскрытой до конца окна и резко гасит. Y всегда 0.93 — тот же
+   инсет от .headlight-core, чтобы контур не вылезал за clip-path острыми углами. */
+@keyframes turnWaveCore {
+  0%, 66%     { opacity: 0; transform: scale(0.02, 0.93); }
+  68%         { opacity: 1; transform: scale(0.93, 0.93); animation-timing-function: steps(1, end); }
+  72%, 74%    { opacity: 0; transform: scale(0.02, 0.93); }
+  76%         { opacity: 1; transform: scale(0.93, 0.93); animation-timing-function: steps(1, end); }
+  80%, 82%    { opacity: 0; transform: scale(0.02, 0.93); }
+  84%         { opacity: 1; transform: scale(0.93, 0.93); animation-timing-function: steps(1, end); }
+  88%, 100%   { opacity: 0; transform: scale(0.02, 0.93); }
+}
+
+/* То же самое, но для размытого сияния — иначе оно вспыхивает на всю ширину
+   мгновенно и полностью маскирует волну у резкого ядра под собой. Целевой
+   масштаб 2.6 — как у обычного .headlight-bloom. */
+@keyframes turnWaveBloom {
+  0%, 66%     { opacity: 0; transform: scale(0.02, 2.6); }
+  68%         { opacity: 1; transform: scale(2.6, 2.6); animation-timing-function: steps(1, end); }
+  72%, 74%    { opacity: 0; transform: scale(0.02, 2.6); }
+  76%         { opacity: 1; transform: scale(2.6, 2.6); animation-timing-function: steps(1, end); }
+  80%, 82%    { opacity: 0; transform: scale(0.02, 2.6); }
+  84%         { opacity: 1; transform: scale(2.6, 2.6); animation-timing-function: steps(1, end); }
+  88%, 100%   { opacity: 0; transform: scale(0.02, 2.6); }
 }
 
 @media (prefers-reduced-motion: reduce) {

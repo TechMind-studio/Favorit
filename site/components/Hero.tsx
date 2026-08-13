@@ -11,13 +11,20 @@ const badges = [
 // размер каждого), а left/top/width/height каждой фары пересчитаны в проценты уже
 // от СВОЕГО обрезанного файла — см. tools/isolate.py, remap() в истории чата.
 // kind: 'turn' — только поворотник (янтарный, мигает).
-// kind: 'dual' — реальный совмещённый блок-фара/поворотник у Omoda (фары 4,5,6,7,8):
-// тёплым светится вместе с обычными фарами, а во вторую половину цикла ЕЩЁ РАЗ
-// загорается янтарным как поворотник — оба слоя рисуются одновременно, каждый
-// видим только в своей фазе, потому что их окна на таймлайне не пересекаются.
+// kind: 'dual' — реальный совмещённый блок-фара/поворотник у Omoda (фары 3 и 4,
+// левый и правый край DRL-полосы): тёплым светится вместе с обычными фарами, а во
+// вторую половину цикла ЕЩЁ РАЗ загорается янтарным как поворотник — оба слоя
+// рисуются одновременно, каждый видим только в своей фазе, потому что их окна
+// на таймлайне не пересекаются.
+// waveFrom — для секвентального поворотника (см. turnWaveCore в globals.css):
+// с какого края фары волна света начинает бежать наружу. Едет от ВНУТРЕННЕГО
+// края (ближе к решётке/логотипу) к внешнему — как у настоящих динамических
+// поворотников. У фары 4 (справа) внутренний край левый, у фары 3 (слева от
+// центра машины) — правый.
 type Lamp = {
   left: string; top: string; width: string; height: string; clip?: string
   delay: string; turnDelay?: string; kind?: 'lamp' | 'turn' | 'dual'
+  waveFrom?: 'left' | 'right'
 }
 
 const motoLights: Lamp[] = [
@@ -53,53 +60,56 @@ const motoLights: Lamp[] = [
 
 const carLights: Lamp[] = [
   {
-    // фара 3 — блик на кромке капота, не отдельный светоблок
+    // фара 3 — кончик левой DRL-полосы, выглядывающий из-за капота (самая
+    // маленькая) — вместе с фарой 4 это одна и та же полоса ходовых огней
+    // слева и справа, поэтому обе дублируют поворотник, синхронно.
     left: '4.43%', top: '35.76%', width: '2.07%', height: '3.16%',
     clip: 'polygon(100.00% 42.69%, 54.38% 100.00%, 0.00% 47.15%, 21.46% 0.00%)',
-    kind: 'lamp',
+    kind: 'dual',
     delay: '0.39s',
+    turnDelay: '0s',
+    waveFrom: 'right',
   },
   {
-    // фара 4 — верхняя световая полоса (DRL); весь блок 4–8 зажигается и гаснет
-    // синхронно (один блок-фара), волновой разбег убрал — он давал впечатление,
-    // что часть секций "не работает" как поворотник.
+    // фара 4 — верхняя световая полоса (DRL) справа, самая длинная — вместе
+    // с фарой 3 реально дублирует поворотник у Omoda. Тёплая волна 3→4→5→6→7→8
+    // остаётся (см. delay ниже), а амбер-поворотник горит только у 3 и 4.
     left: '39.77%', top: '34.51%', width: '18.85%', height: '5.32%',
     clip: 'polygon(0.00% 70.73%, 15.31% 59.02%, 16.68% 70.64%, 91.58% 25.99%, 94.85% 5.50%, 100.00% 0.00%, 93.89% 87.25%, 85.27% 89.34%, 88.59% 54.03%, 7.98% 100.00%)',
     kind: 'dual',
     delay: '0.51s',
     turnDelay: '0s',
+    waveFrom: 'left',
   },
   {
-    // фара 5 — верхняя секция блок-фары, ближе к центру связки
+    // фара 5 — верхняя секция блок-фары, ближе к центру связки — только тёплый
+    // свет, к моменту поворотника уже погасла, амбером не мигает.
     left: '49.45%', top: '45.34%', width: '7.07%', height: '6.04%',
     clip: 'polygon(23.61% 40.11%, 100.00% 0.00%, 93.22% 85.97%, 0.00% 100.00%)',
-    kind: 'dual',
-    delay: '0.51s',
-    turnDelay: '0s',
+    kind: 'lamp',
+    delay: '0.63s',
   },
   {
-    // фара 6 — средняя секция, центр связки
+    // фара 6 — средняя секция, центр связки — только тёплый свет.
     left: '46.78%', top: '50.76%', width: '8.96%', height: '8.42%',
     clip: 'polygon(28.61% 14.14%, 100.00% 0.00%, 98.53% 28.88%, 89.78% 83.42%, 4.13% 100.00%, 0.00% 82.04%)',
-    kind: 'dual',
-    delay: '0.51s',
-    turnDelay: '0s',
+    kind: 'lamp',
+    delay: '0.75s',
   },
   {
-    // фара 7 — нижняя секция
+    // фара 7 — нижняя секция — только тёплый свет.
     left: '46.68%', top: '58.89%', width: '8.52%', height: '5.39%',
     clip: 'polygon(3.96% 22.06%, 99.02% 0.00%, 100.00% 76.53%, 94.96% 83.60%, 39.58% 100.00%, 0.00% 33.13%)',
-    kind: 'dual',
-    delay: '0.51s',
-    turnDelay: '0s',
+    kind: 'lamp',
+    delay: '0.87s',
   },
   {
-    // фара 8 — боковой маркер у решётки, отдельный светоблок, синхронен с центром связки
+    // фара 8 — боковой маркер у решётки (край противоположной фары в кадре) —
+    // только тёплый свет, поворотником не мигает.
     left: '0.86%', top: '46.40%', width: '1.66%', height: '12.75%',
     clip: 'polygon(0.00% 56.63%, 26.71% 73.84%, 28.52% 93.26%, 74.92% 100.00%, 100.00% 83.57%, 74.91% 0.00%)',
-    kind: 'dual',
-    delay: '0.51s',
-    turnDelay: '0s',
+    kind: 'lamp',
+    delay: '0.99s',
   },
 ]
 
@@ -107,6 +117,10 @@ function Headlight({ l }: { l: Lamp }) {
   const shape = l.clip ? { clipPath: l.clip } : { borderRadius: '50%' }
   const showLamp = l.kind !== 'turn'
   const showTurn = l.kind === 'turn' || l.kind === 'dual'
+  // Секвентальная волна — только у блок-фары машины (kind:'dual'); поворотник
+  // мотоцикла (kind:'turn') мигает как обычная лампа с реле, без бега света.
+  const waveClass = l.kind === 'dual' ? ' headlight-bloom--wave' : ''
+  const waveClassCore = l.kind === 'dual' ? ' headlight-core--wave' : ''
   return (
     <span className="headlight-wrap" style={{ left: l.left, top: l.top, width: l.width, height: l.height }}>
       {showLamp && (
@@ -117,8 +131,14 @@ function Headlight({ l }: { l: Lamp }) {
       )}
       {showTurn && (
         <>
-          <span className="headlight-bloom headlight-bloom--turn" style={{ borderRadius: '50%', animationDelay: l.turnDelay ?? l.delay }} />
-          <span className="headlight-core headlight-core--turn" style={{ ...shape, animationDelay: l.turnDelay ?? l.delay }} />
+          <span
+            className={`headlight-bloom headlight-bloom--turn${waveClass}`}
+            style={{ borderRadius: '50%', animationDelay: l.turnDelay ?? l.delay, transformOrigin: l.waveFrom ?? 'center' }}
+          />
+          <span
+            className={`headlight-core headlight-core--turn${waveClassCore}`}
+            style={{ ...shape, animationDelay: l.turnDelay ?? l.delay, transformOrigin: l.waveFrom ?? 'center' }}
+          />
         </>
       )}
     </span>
