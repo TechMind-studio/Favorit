@@ -150,7 +150,7 @@ function Headlight({ l }: { l: Lamp }) {
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative overflow-hidden bg-[#F7F6F4]" style={{ marginTop: '112px' }}>
+    <section id="hero" className="relative overflow-hidden bg-[#F7F6F4]" style={{ marginTop: '124px' }}>
       <div className="max-w-6xl mx-auto px-4 pt-6 pb-12 md:pt-8 md:pb-16">
         {/* На мобильном — одна колонка с явным порядком: заголовок → транспорт → текст и CTA,
             чтобы на первом экране было видно то же, что и на десктопе (обещание + автопарк).

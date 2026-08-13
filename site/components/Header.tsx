@@ -16,7 +16,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-0">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-3">
       <div className="max-w-6xl mx-auto glass rounded-full px-10 py-3 flex justify-between items-center shadow-xl shadow-black/5 border border-white/50">
         <a href="#" className="flex items-center gap-4 flex-shrink-0">
           <Image src={`${basePath}/logo.svg`} alt="Автошкола Фаворит" width={495} height={387} className="h-[52px] w-auto" priority />
